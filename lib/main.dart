@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/providers/WeitherProvider.dart';
 import 'package:weather_app/views/home_view.dart';
 
-void main() {
-  runApp(const WeatherApp());
+
+void main() async{
+  runApp( WeatherApp());
 }
 
 class WeatherApp extends StatelessWidget {
-  const WeatherApp({Key? key}) : super(key: key);
+   WeatherApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeView(),
+    return  ChangeNotifierProvider(
+      create: (BuildContext context) {
+        return WeitherProvider();
+        },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeView(),
+      ),
     );
   }
 }
+

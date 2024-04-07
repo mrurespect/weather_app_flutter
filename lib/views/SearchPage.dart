@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/models/weitherModel.dart';
+import 'package:weather_app/providers/WeitherProvider.dart';
+import 'package:weather_app/services/WeitherService.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
 
-  @override
-  _SearchPageState createState() => _SearchPageState();
-}
+class SearchPage extends StatelessWidget {
 
-class _SearchPageState extends State<SearchPage> {
+  //VoidCallback? updateUI;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +20,12 @@ class _SearchPageState extends State<SearchPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
-            onSubmitted: (value) {
-              print('Submitted value: $value');
+            onSubmitted: (value) async{
+              WeitherService weitherService = WeitherService();
+              WeitherModel weither =await weitherService.getWeither(cityName: value);
+              Provider.of<WeitherProvider>(context,listen: false).weither = weither;
+              //updateUI!();
+              Navigator.pop(context);
             },
             decoration: const InputDecoration(
               hintText: 'Enter a city name',

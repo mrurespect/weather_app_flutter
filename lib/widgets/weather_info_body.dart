@@ -1,74 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/models/weitherModel.dart';
+import 'package:weather_app/providers/WeitherProvider.dart';
 
 class WeatherInfoBody extends StatelessWidget {
-  const WeatherInfoBody({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Alexandria',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
-            ),
-          ),
-          const Text(
-            'updated at 23:46',
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                'assets/images/cloudy.png',
+    WeitherModel weither =Provider.of<WeitherProvider>(context).weither! ;
+    return Scaffold(
+      backgroundColor: updateBgColor(weither.weitherStateName),
+        body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+             Text(
+              weither.cityName,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
               ),
-              const Text(
-                '17',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
+            ),
+             Text(
+              'updated at ${weither.date}',
+              style: const TextStyle(
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Image.network(
+                  "${weither.image}",
                 ),
-              ),
-              const Column(
-                children: [
-                  Text(
-                    'Maxtemp: 24',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
+                 Text(
+                  "${weither.temp}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
                   ),
-                  Text(
-                    'Mintemp: 16',
-                    style: TextStyle(
-                      fontSize: 16,
+                ),
+                 Column(
+                  children: [
+                    Text(
+                      'Maxtemp: ${weither.maxTemp}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          const Text(
-            'Ligh Rain',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
+                    Text(
+                      'Mintemp: ${weither.minTemp}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 32,
+            ),
+             Text(
+              weither.weitherStateName,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Color updateBgColor(String weitherStateName) {
+    if (weitherStateName == 'Sunny') {
+      return Colors.yellow;
+    } else if (weitherStateName == 'Rainy') {
+      return Colors.blue;
+    } else if (weitherStateName == 'Cloudy') {
+      return Colors.grey;
+    } else if (weitherStateName == 'Snowy') {
+      return Colors.white;
+    } else if (weitherStateName == 'Windy') {
+      return Colors.green;
+    } else if (weitherStateName == 'Foggy') {
+      return Colors.grey;
+    } else if (weitherStateName == 'Thunderstorm') {
+      return Colors.black;
+    } else if (weitherStateName == 'Hail') {
+      return Colors.grey;
+    } else if (weitherStateName == 'Tornado') {
+      return Colors.black;
+    } else if (weitherStateName == 'partly cloudy') {
+      return Colors.grey;
+    }
+    else {
+      return Colors.limeAccent;
+    }
   }
 }
