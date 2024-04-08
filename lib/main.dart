@@ -5,23 +5,27 @@ import 'package:weather_app/views/home_view.dart';
 
 
 void main() async{
-  runApp( WeatherApp());
+  runApp(
+      ChangeNotifierProvider(
+          create: (BuildContext context) {
+            return WeitherProvider();
+          },
+          child:const WeatherApp())
+  );
 }
 
 class WeatherApp extends StatelessWidget {
-   WeatherApp({Key? key}) : super(key: key);
+   const WeatherApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  ChangeNotifierProvider(
-      create: (BuildContext context) {
-        return WeitherProvider();
-        },
-      child: MaterialApp(
+    return   MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorSchemeSeed: Colors.red,
+        ),
         home: HomeView(),
-      ),
-    );
+      );
   }
 }
 

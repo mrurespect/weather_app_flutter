@@ -6,8 +6,8 @@ import 'package:weather_app/services/WeitherService.dart';
 
 
 class SearchPage extends StatelessWidget {
-
-  //VoidCallback? updateUI;
+   SearchPage({super.key});
+  String value = '';
 
 
   @override
@@ -20,18 +20,22 @@ class SearchPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
-            onSubmitted: (value) async{
-              WeitherService weitherService = WeitherService();
-              WeitherModel weither =await weitherService.getWeither(cityName: value);
-              Provider.of<WeitherProvider>(context,listen: false).weither = weither;
-              //updateUI!();
-              Navigator.pop(context);
+            onChanged: (value) {
+              this.value = value;
             },
-            decoration: const InputDecoration(
+            onSubmitted: (value) async{
+              await showHomeView(context, value);
+            },
+            decoration:  InputDecoration(
               hintText: 'Enter a city name',
               border: OutlineInputBorder(),
               labelText: 'Search',
-              suffixIcon: Icon(Icons.search),
+              suffixIcon: IconButton(
+                onPressed: () async {
+                  await showHomeView(context, value);
+                },
+                icon: const Icon(Icons.search),
+              ),
               contentPadding: EdgeInsets.all(20),
             ),
           ),
@@ -39,4 +43,12 @@ class SearchPage extends StatelessWidget {
       ),
     );
   }
+
+ Future<void> showHomeView(BuildContext context ,String value) async {
+    WeitherService weitherService = WeitherService();
+    WeitherModel weither = await weitherService.getWeither(cityName: value);
+    Provider.of<WeitherProvider>(context, listen: false).weither = weither;
+    Navigator.pop(context);
+  }
 }
+

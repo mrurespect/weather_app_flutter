@@ -8,35 +8,37 @@ import '../providers/WeitherProvider.dart';
 import 'SearchPage.dart';
 
 class HomeView extends StatefulWidget {
+   HomeView({super.key});
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-  void updateUI() {
-    setState(() {});
-  }
+  //void updateUI() {
+  //  setState(() {});
+  //}
   @override
   Widget build(BuildContext context) {
     WeitherModel? weither =Provider.of<WeitherProvider>(context).weither ;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: weither?.getColorForWeather() ?? Colors.blue,
         title:  const Text('Weather App'),
-        backgroundColor: Colors.limeAccent,
         actions: [
           IconButton(
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  SearchPage(),
+                    builder: (context) =>   SearchPage(),
                   )
               );
             },
             icon: const Icon(Icons.search),
           ),],
       ),
-      body: weither == null ? const NoWeatherBody() : WeatherInfoBody(),
+      body: weither == null ? const NoWeatherBody() : const WeatherInfoBody(),
     );
   }
 }
